@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttendancesController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
@@ -30,3 +31,8 @@ Route::resource('departments', DepartmentsController::class);
 Route::resource('employees', EmployeesController::class);
 Route::resource('salaries', SalariesController::class);
 Route::resource('attendances', AttendancesController::class);
+
+Route::get('/attendances', [AttendancesController::class, 'index'])->name('attendances.index');
+Route::get('/attendances/search', [AttendancesController::class, 'search'])->name('attendances.search');
+Route::post('/attendances/check-in', [AttendancesController::class, 'checkIn'])->name('attendances.checkin');
+Route::post('/attendances/check-out', [AttendancesController::class, 'checkOut'])->name('attendances.checkout');
