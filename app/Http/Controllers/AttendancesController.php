@@ -2,19 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\AttendancesExport;
 use App\Http\Controllers\Controller;
 use App\Models\Attendance;
 use App\Models\Employee;
 use App\Models\Setting;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AttendancesController extends Controller
 {
     // عرض كشف الحضور والانصراف
-    public function index()
+    public function index(Request $request)
     {
-        $attendances = Attendance::with('employee')->orderBy('date', 'desc')->get();
+        $query = Attendance::query();
+
+        // البحث حسب اسم الموظف
+        if ($request->filled('employee_name')) {
+            $query->whereHas('employee', function ($q) use ($request) {
+                $q->where('name', 'LIKE', '%' . $request->employee_name . '%');
+            });
+        }
+
+        // الفلترة حسب التاريخ
+        if ($request->filled('date')) {
+            $query->whereDate('date', $request->date);
+        }
+
+        $attendances = $query->with('employee.department')->latest()->paginate(10);
+
         return view('attendances.index', compact('attendances'));
     }
 
@@ -130,4 +148,33 @@ class AttendancesController extends Controller
         $attendance->delete();
         return redirect()->route('attendances.index')->with('success', 'تم حذف السجل بنجاح');
     }
+
+    public function report(Request $request)
+    {
+        $query = Attendance::with('employee.department');
+
+        if ($request->has('date')) {
+            $query->whereDate('date', $request->date);
+        }
+
+
+    $attendances = $query->get();
+
+    return view('attendances.report', compact('attendances'));
+}
+
+    public function exportExcel()
+    {
+        return Excel::download(new AttendancesExport, 'attendance_report.xlsx');
+    }
+
+    public function exportPdf()
+{
+    $attendances = Attendance::with('employee.department')->get();
+
+    $pdf = Pdf::loadView('attendances.report', compact('attendances'))
+              ->setPaper('A4', 'landscape');
+
+    return $pdf->download('تقرير_الحضور_والانصراف.pdf');
+}
 }

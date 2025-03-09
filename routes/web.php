@@ -30,7 +30,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::resource('departments', DepartmentsController::class);
 Route::resource('employees', EmployeesController::class);
-// Route::resource('attendances', AttendancesController::class);
 Route::resource('salaries', SalariesController::class);
 
 // عرض صفحة الحضور والانصراف
@@ -43,6 +42,9 @@ Route::prefix('attendances')->group(function () {
     Route::get('/{attendance}/edit', [AttendancesController::class, 'edit'])->name('attendances.edit'); // تعديل
     Route::put('/{attendance}', [AttendancesController::class, 'update'])->name('attendances.update'); // حفظ التعديلات
     Route::delete('/{attendance}', [AttendancesController::class, 'destroy'])->name('attendances.destroy'); // حذف
+    Route::get('/attendances/report', [AttendancesController::class, 'report'])->name('attendances.report');
+    Route::get('/attendances/export-excel', [AttendancesController::class, 'exportExcel'])->name('attendances.exportExcel');
+    Route::get('/attendances/export-pdf', [AttendancesController::class, 'exportPDF'])->name('attendances.exportPDF');
 });
 
 
