@@ -5,163 +5,129 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Attendance;
 use App\Models\Employee;
+use App\Models\Setting;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AttendancesController extends Controller
 {
-    // عرض صفحة الحضور والانصراف مع جميع الموظفين
-    public function index(Request $request)
+    // عرض كشف الحضور والانصراف
+    public function index()
     {
-        $employees = Employee::with('department')->get();
-        $attendances = Attendance::with('employee')->whereDate('date', Carbon::today())->get();
-        return view('attendances.index', compact('employees', 'attendances'));
+        $attendances = Attendance::with('employee')->orderBy('date', 'desc')->get();
+        return view('attendances.index', compact('attendances'));
     }
 
-    // البحث عن الموظف وعرض النتائج مباشرة
-    public function search(Request $request)
+    // عرض صفحة تسجيل الحضور
+    public function showCheckInPage()
     {
-        $search = $request->input('query');
-        $attendances = Attendance::with('employee')
-            ->whereHas('employee', function ($query) use ($search) {
-                $query->where('name', 'LIKE', "%$search%");
-            })
-            ->latest()
-            ->get();
-
-        return response()->json($attendances);
+        $employees = Employee::all();
+        return view('attendances.check-in', compact('employees'));
     }
 
-    public function checkIn(Request $request,Employee $employee)
+    // تسجيل الحضور
+    public function checkIn(Request $request)
     {
         $request->validate([
             'employee_id' => 'required|exists:employees,id',
         ]);
 
         $employee = Employee::findOrFail($request->employee_id);
-        $now = Carbon::now();
-        $officialStart = Carbon::createFromTime(9, 0, 0); // وقت الدوام الرسمي
-        $lateMinutes = max(0, $now->diffInMinutes($officialStart, false));
+        $currentTime = Carbon::now();
 
-        $attendance = Attendance::updateOrCreate(
-            ['employee_id' => $employee->id, 'date' => $now->toDateString()],
-            ['check_in' => $now->toTimeString(), 'late_minutes' => $lateMinutes]
-        );
+        // استرجاع إعدادات أوقات العمل
+        $settings = Setting::first();
+        if (!empty($settings->work_start_time)) {
+            $workStartTime = Carbon::createFromFormat('H:i', $settings->work_start_time);
+        } else {
+            // تعيين وقت افتراضي إذا كانت القيمة غير صالحة
+            $workStartTime = Carbon::createFromFormat('H:i', '09:00');
+        }
 
-        return redirect()->back()->with('success', 'تم تسجيل الحضور بنجاح');
-    }
+        $lateMinutes = max(0, $workStartTime->diffInMinutes($currentTime, false));
 
-    public function checkOut(Request $request)
-    {
-        $request->validate(['employee_id' => 'required|exists:employees,id']);
+        // تحديد الحالة بناءً على التأخير
+        if ($lateMinutes >= $settings->late_full_day) {
+            $status = 'تأخير يوم كامل';
+        } elseif ($lateMinutes >= $settings->late_half_day) {
+            $status = 'تأخير نصف يوم';
+        } else {
+            $status = 'حاضر';
+        }
 
-        $employee = Employee::findOrFail($request->employee_id);
-        $now = Carbon::now();
-        $attendance = Attendance::where('employee_id', $employee->id)
-            ->whereDate('date', $now->toDateString())
-            ->firstOrFail();
-
-        $checkInTime = Carbon::parse($attendance->check_in);
-        $workingMinutes = $checkInTime->diffInMinutes($now);
-        $overtimeMinutes = max(0, $workingMinutes - 480); // أي وقت يزيد عن 8 ساعات يعتبر إضافي
-
-        $attendance->update([
-            'check_out' => $now->toTimeString(),
-            'working_hours' => round($workingMinutes / 60, 2),
-            'overtime_minutes' => $overtimeMinutes,
+        // حفظ بيانات الحضور
+        Attendance::create([
+            'employee_id' => $employee->id,
+            'date' => Carbon::today(),
+            'check_in' => $currentTime->format('h:i A'),
+            'check_out' => null, // تأكد من تمرير NULL وليس تركه فارغًا
+            'late_minutes' => $lateMinutes,
+            'status' => $status
         ]);
 
-        return redirect()->back()->with('success', 'تم تسجيل الانصراف بنجاح');
+        return redirect()->route('attendances.index')->with('success', 'تم تسجيل الحضور بنجاح');
     }
 
-    // public function store(Request $request)
-    // {
-    //     $request->validate([
-    //         'employee_id' => 'required|exists:employees,id',
-    //     ]);
+    // عرض صفحة تسجيل الانصراف
+    public function showCheckOutPage()
+    {
+        $attendances = Attendance::whereNull('check_out')->with('employee')->get();
+        return view('attendances.check-out', compact('attendances'));
+    }
 
-    //     $employee = Employee::with('department')->findOrFail($request->employee_id);
-    //     $now = Carbon::now();
-    //     $lateMinutes = $this->calculateLateMinutes($now);
+    // تسجيل الانصراف
+    public function checkOut(Request $request)
+    {
+        $request->validate([
+            'attendance_id' => 'required|exists:attendances,id',
+        ]);
 
-    //     $attendance = Attendance::create([
-    //         'employee_id' => $employee->id,
-    //         'date' => $now->toDateString(),
-    //         'check_in' => $now->toTimeString(),
-    //         'late_minutes' => $lateMinutes,
-    //     ]);
+        $attendance = Attendance::findOrFail($request->attendance_id);
+        $checkOutTime = Carbon::now();
 
-    //     return response()->json([
-    //         'success' => true,
-    //         'employee' => [
-    //             'name' => $employee->name,
-    //             'department' => $employee->department->name ?? 'غير محدد',
-    //         ],
-    //         'date' => $attendance->date,
-    //         'check_in' => $attendance->check_in,
-    //         'late_minutes' => $attendance->late_minutes,
-    //     ]);
-    // }
+        // حساب عدد ساعات العمل
+        $checkInTime = Carbon::parse($attendance->check_in);
+        $workingHours = $checkInTime->diffInHours($checkOutTime);
 
+        // حساب الإضافي (بعد 8 ساعات عمل)
+        $overtime = max(0, $workingHours - 8);
 
+        // تحديث بيانات الحضور بالانصراف
+        $attendance->update([
+            'check_out' => $checkOutTime->format('h:i A'),
+            'working_hours' => $workingHours,
+            'overtime_minutes' => $overtime * 60,
+        ]);
 
-    // public function store(Request $request){
+        return redirect()->route('attendances.index')->with('success', 'تم تسجيل الانصراف بنجاح');
+    }
 
-        // $request->validate([
-        //     'employee_id' => 'required|exists:employees,id',
-        //     'date' => 'required|date',
-        //     'check_in' => 'required',
-        //     'check_out' => 'nullable',
-        // ]);
+    // تعديل الحضور والانصراف
+    public function edit(Attendance $attendance)
+    {
+        return view('attendances.edit', compact('attendance'));
+    }
 
-        // $checkIn = Carbon::parse($request->check_in);
-        // $officialStart = Carbon::createFromTime(9, 0, 0);
-        // $lateMinutes = max(0, $checkIn->diffInMinutes($officialStart));
+    // تحديث بيانات الحضور والانصراف
+    public function update(Request $request, Attendance $attendance)
+    {
+        $request->validate([
+            'check_in' => 'required',
+            'check_out' => 'nullable',
+            'late_minutes' => 'required|integer',
+            'working_hours' => 'required|integer',
+            'overtime_minutes' => 'required|integer',
+        ]);
 
-        // Attendance::create([
-        //     'employee_id' => $request->employee_id,
-        //     'date' => $request->date,
-        //     'check_in' => $request->check_in,
-        //     'check_out' => $request->check_out,
-        //     'late_minutes' => $lateMinutes,
-        // ]);
+        $attendance->update($request->all());
 
-        // return redirect()->route('attendances.index')->with('success', 'تم تسجيل الحضور بنجاح.');
-    // }
+        return redirect()->route('attendances.index')->with('success', 'تم تحديث البيانات بنجاح');
+    }
 
-    // public function edit(Attendance $attendance)
-    // {
-    //     $employees = Employee::all();
-    //     return view('attendances.edit', compact('attendance', 'employees'));
-    // }
-
-    // public function update(Request $request, Attendance $attendance)
-    // {
-    //     $request->validate([
-    //         'employee_id' => 'required|exists:employees,id',
-    //         'date' => 'required|date',
-    //         'check_in' => 'required',
-    //         'check_out' => 'nullable',
-    //     ]);
-
-    //     $checkIn = Carbon::parse($request->check_in);
-    //     $officialStart = Carbon::createFromTime(9, 0, 0);
-    //     $lateMinutes = max(0, $checkIn->diffInMinutes($officialStart));
-
-    //     $attendance->update([
-    //         'employee_id' => $request->employee_id,
-    //         'date' => $request->date,
-    //         'check_in' => $request->check_in,
-    //         'check_out' => $request->check_out,
-    //         'late_minutes' => $lateMinutes,
-    //     ]);
-
-    //     return redirect()->route('attendances.index')->with('success', 'تم تحديث بيانات الحضور بنجاح.');
-    // }
-
+    // حذف سجل الحضور والانصراف
     public function destroy(Attendance $attendance)
     {
         $attendance->delete();
-        return redirect()->route('attendances.index')->with('success', 'تم حذف بيانات الحضور بنجاح.');
+        return redirect()->route('attendances.index')->with('success', 'تم حذف السجل بنجاح');
     }
 }

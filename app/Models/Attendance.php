@@ -8,7 +8,13 @@ class Attendance extends Model
 {
     // use HasFactory;
 
-    protected $fillable = ['employee_id', 'date', 'check_in', 'check_out', 'late_minutes'];
+    protected $fillable = ['employee_id', 'date', 'check_in', 'check_out', 'late_minutes', 'status'];
+
+    protected $casts = [
+        'check_in' => 'string',  // أو 'integer', 'boolean', 'datetime'
+        'check_out' => 'string',
+    ];
+
 
     public function employee()
     {
