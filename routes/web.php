@@ -6,6 +6,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentsController;
 use App\Http\Controllers\EmployeesController;
+use App\Http\Controllers\HolidayController;
+use App\Http\Controllers\LeavesController;
+use App\Http\Controllers\SalaryController;
 use App\Http\Controllers\SettingController;
 
 // تسجيل مستخدم جديد
@@ -47,6 +50,17 @@ Route::prefix('attendances')->group(function () {
     Route::get('/attendances/export-pdf', [AttendancesController::class, 'exportPDF'])->name('attendances.exportPDF');
 });
 
+Route::resource('salaries', SalaryController::class);
+// عرض صفحة الإجازات
+Route::get('/leaves', [LeavesController::class, 'index'])->name('leaves.index');
+Route::get('/leaves/create', [LeavesController::class, 'create'])->name('leaves.create');
+Route::post('/leaves', [LeavesController::class, 'store'])->name('leaves.store');
+Route::get('leaves/{leave}/edit', [LeavesController::class, 'edit'])->name('leaves.edit');
+Route::put('leaves/{leave}', [LeavesController::class, 'update'])->name('leaves.update');
+Route::patch('leaves/{leave}/update-status', [LeavesController::class, 'updateStatus'])->name('leaves.updateStatus');
+Route::delete('leaves/{leave}', [LeavesController::class, 'destroy'])->name('leaves.destroy');
+// عرض صفحة إدارة الأجازات الرسمية
+Route::resource('holidays', HolidayController::class);
 
 // عرض صفحة الإعدادات
 Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');

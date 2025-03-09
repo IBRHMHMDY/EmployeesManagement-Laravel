@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('salaries', function (Blueprint $table) {
+        Schema::create('holidays', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('employee_id')->constrained()->onDelete('cascade');
-            $table->decimal('basic_salary', 10, 2);
-            $table->integer('overtime_hours')->default(0);
-            $table->decimal('deductions', 10, 2)->default(0);
-            $table->decimal('net_salary', 10, 2);
+            $table->string('name');
+            $table->date('date');
+            $table->enum('type', ['official', 'weekly'])->default('weekly'); // نوع الإجازة
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('salaries');
+        Schema::dropIfExists('holidays');
     }
 };

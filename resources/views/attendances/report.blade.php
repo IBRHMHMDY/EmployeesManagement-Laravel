@@ -6,7 +6,7 @@
     <title>تقرير الحضور والانصراف</title>
     <style>
         body {
-            font-family: 'DejaVu Sans', sans-serif; /* لضمان دعم العربية في PDF */
+            font-family: 'DejaVu Sans', sans-serif; /* دعم العربية */
             text-align: right;
         }
         table {
@@ -23,11 +23,23 @@
             background-color: #f4f4f4;
             font-weight: bold;
         }
+        /* إخفاء زر الطباعة عند الطباعة */
+        @media print {
+            .print-btn {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
 
     <h2 style="text-align: center;">تقرير الحضور والانصراف</h2>
+
+    <!-- زر الطباعة -->
+    <button class="print-btn" onclick="window.print()"
+        style="display: block; margin: 10px auto; padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
+        🖨️ طباعة التقرير
+    </button>
 
     <table>
         <thead>
