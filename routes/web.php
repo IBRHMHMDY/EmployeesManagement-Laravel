@@ -1,49 +1,34 @@
 <?php
-
-use App\Http\Controllers\AttendancesController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeductionsController;
 use App\Http\Controllers\DepartmentsController;
 use App\Http\Controllers\EmployeesController;
+use App\Http\Controllers\AttendancesController;
 use App\Http\Controllers\HolidayController;
 use App\Http\Controllers\LeavesController;
 use App\Http\Controllers\SalaryController;
 use App\Http\Controllers\SettingController;
 
-// تسجيل مستخدم جديد
-Route::post('/register',[AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
-// عرض لوحة التحكم
-Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-// حماية المسارات باستخدام Sanctum
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout']);
-
-    // مسار مخصص للمدير فقط
-    Route::get('/admin-only', function () {
-        return response()->json(['message' => 'مرحبًا أيها المدير']);
-    })->middleware('role:admin');
-
-    // مسار مخصص للموظفين فقط
-    Route::get('/employee-only', function () {
-        return response()->json(['message' => 'مرحبًا أيها الموظف']);
-    })->middleware('role:employee');
+Route::middleware('guest')->group(function() {
+    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
 });
+
+Route::middleware('auth')->group(function() {
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+});
+
+Route::resource('users', UserController::class);
+
+
 
 Route::resource('departments', DepartmentsController::class);
 Route::resource('employees', EmployeesController::class);
-
-// Route::get('/employees', [EmployeesController::class, 'index'])->name('employees.index');
-// Route::get('/employees/create', [EmployeesController::class, 'create'])->name('employees.create');
-// Route::post('/employees', [EmployeesController::class, 'store'])->name('employees.store');
-// Route::get('/employees/{employee}', [EmployeesController::class, 'show'])->name('employees.show');
-// Route::get('/employees/{employee}/edit', [EmployeesController::class, 'edit'])->name('employees.edit');
-// Route::put('/employees/{employee}', [EmployeesController::class, 'update'])->name('employees.update');
-// Route::delete('/employees/{employee}', [EmployeesController::class, 'destroy'])->name('employees.destroy');
-
-Route::resource('salaries', SalariesController::class);
+Route::resource('salaries', SalaryController::class);
 
 // عرض صفحة الحضور والانصراف
 Route::prefix('attendances')->group(function () {

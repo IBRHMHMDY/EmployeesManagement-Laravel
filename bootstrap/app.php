@@ -13,7 +13,6 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         app('router')->aliasMiddleware('auth:sanctum', EnsureFrontendRequestsAreStateful::class);
-        
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

@@ -3,10 +3,13 @@
         <span class="material-icons">dashboard</span>
         لوحة التحكم
     </div>
-    {{-- <form method="POST" action="{{ route('logout') }}"> --}}
-        {{-- @csrf --}}
-        <button type="submit" class="flex items-center gap-2 bg-red-600 px-4 py-2 rounded hover:bg-red-700">
-            <span class="material-icons">logout</span> تسجيل الخروج
-        </button>
-    {{-- </form> --}}
+    <button id="logout-btn" class="bg-red-500 text-white px-4 py-2 rounded">تسجيل الخروج</button>
+
 </nav>
+
+<script>
+    document.getElementById('logout-btn').addEventListener('click', function() {
+        fetch('/logout', { method: 'POST', headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' } })
+        .then(() => location.reload());
+    });
+</script>

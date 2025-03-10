@@ -8,14 +8,20 @@
     <link rel="stylesheet" href="https://cdn.tailwindcss.com">
 </head>
 <body class="bg-gray-100">
-    @include('layouts.navbar')
-    <div class="flex">
-        @include('layouts.sidebar')
-        <main class="flex-1 p-6">
+    @auth
+        @include('layouts.navbar')
+        <div class="flex">
+            @include('layouts.sidebar')
+            <main class="flex-1 p-6">
+                @yield('content')
+            </main>
+        </div>
+        @include('layouts.footer')
+    @else
+        <div class="flex justify-center items-center h-screen">
             @yield('content')
-        </main>
-    </div>
-    @include('layouts.footer')
+        </div>
+    @endauth
     <script src="https://cdn.tailwindcss.com"></script>
 </body>
 </html>

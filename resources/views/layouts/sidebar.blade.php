@@ -1,18 +1,18 @@
-<aside class="bg-gray-800 text-white w-64 min-h-screen p-4">
-    <ul>
-        <li class="mb-4">
+<aside class="bg-gray-800 text-white w-64 h-screen p-4 flex flex-col justify-between">
+    <ul >
+        <li class="mb-4 active">
             <a href="{{ route('dashboard') }}" class="flex items-center gap-2 hover:bg-gray-700 p-2 rounded">
                 <span class="material-icons">home</span> الرئيسية
             </a>
         </li>
         <li class="mb-4">
-            <a href="{{ route('employees.index') }}" class="flex items-center gap-2 hover:bg-gray-700 p-2 rounded">
-                <span class="material-icons">person</span> إدارة الموظفين
+            <a href="{{ route('departments.index') }}" class="flex items-center gap-2 hover:bg-gray-700 p-2 rounded">
+                <span class="material-icons">business</span>  إدارة الأقسام
             </a>
         </li>
         <li class="mb-4">
-            <a href="{{ route('departments.index') }}" class="flex items-center gap-2 hover:bg-gray-700 p-2 rounded">
-                <span class="material-icons">business</span> الأقسام
+            <a href="{{ route('employees.index') }}" class="flex items-center gap-2 hover:bg-gray-700 p-2 rounded">
+                <span class="material-icons">person</span> إدارة الموظفين
             </a>
         </li>
         <li class="mb-4">
@@ -27,7 +27,7 @@
         </li>
         <li class="mb-4">
             <a href="{{ route('leaves.index') }}" class="flex items-center gap-2 hover:bg-gray-700 p-2 rounded">
-                <span class="material-icons">today</span> الإجازات
+                <span class="material-icons">today</span> كشف الإجازات
             </a>
         </li>
         <li class="mb-4">
@@ -38,6 +38,19 @@
         <li class="mb-4">
             <a href="{{ route('deductions.index') }}" class="flex items-center gap-2 hover:bg-gray-700 p-2 rounded">
                 <span class="material-icons">money_off</span> الخصومات
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('users.index') }}" class="block p-2">
+                <span class="material-icons">people</span> المستخدمين
+            </a>
+        </li>
+
+    </ul>
+    <ul>
+        <li class="mb-4">
+            <a href="{{ route('settings.index') }}" class="flex items-center gap-2 hover:bg-gray-700 p-2 rounded">
+                <span class="material-icons">settings</span> الإعدادات
             </a>
         </li>
     </ul>
