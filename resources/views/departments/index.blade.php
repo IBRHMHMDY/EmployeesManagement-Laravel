@@ -1,14 +1,21 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="max-w-6xl mx-auto bg-white p-6 shadow-lg rounded-lg">
+
     <h2 class="text-2xl font-bold mb-4">إدارة الأقسام</h2>
 
-    <form method="GET" action="{{ route('departments.index') }}" class="mb-4">
-        <input type="text" name="search" value="{{ request('search') }}" placeholder="ابحث عن قسم..."
-            class="border p-2 rounded">
-        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">بحث</button>
-    </form>
+    <div class="flex justify-between">
+        <a href="{{ route('departments.create') }}" class="bg-green-500 text-white px-4 py-2 rounded mb-4 inline-block">
+            + إضافة قسم جديد
+        </a>
+
+        <form method="GET" action="{{ route('departments.index') }}" class="mb-4">
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="ابحث عن قسم..."
+                class="border p-2 rounded">
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">بحث</button>
+        </form>
+    </div>
 
     <table class="w-full border-collapse border border-gray-300">
         <thead>

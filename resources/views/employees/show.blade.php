@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto p-6">
+<div class="max-w-6xl mx-auto bg-white p-6 shadow-lg rounded-lg">
     <h2 class="text-3xl font-bold mb-6 text-gray-700">تفاصيل الموظف</h2>
 
     <div class="bg-white shadow-lg rounded-lg p-6 max-w-2xl ">

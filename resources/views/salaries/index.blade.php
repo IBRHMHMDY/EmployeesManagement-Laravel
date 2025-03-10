@@ -33,7 +33,7 @@
                 <td class="border p-2">{{ number_format($salary->basic_salary, 2) }}</td>
                 <td class="border p-2">{{ $salary->overtime_hours }}</td>
                 <td class="border p-2">{{ number_format($salary->overtime_pay, 2) }}</td>
-                <td class="border p-2">{{ number_format($salary->deductions, 2) }}</td>
+                <td class="border p-2">{{ $salary->employee->deductions->sum('amount') }}</td>
                 <td class="border p-2">{{ number_format($salary->net_salary, 2) }}</td>
                 <td class="border p-2">
                     <form action="{{ route('salaries.destroy', $salary->id) }}" method="POST" class="inline">

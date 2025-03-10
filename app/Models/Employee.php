@@ -9,7 +9,16 @@ class Employee extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'email', 'phone', 'job_title', 'basic_salary', 'department_id', 'hiring_date', 'status'];
+    protected $fillable = [
+        "name",
+        "email",
+        "phone",
+        "job_title",
+        "basic_salary",
+        "department_id",
+        "hiring_date",
+        "status",
+      ];
 
     public function department()
     {
@@ -34,5 +43,13 @@ class Employee extends Model
     public function deductions()
     {
         return $this->hasMany(Deduction::class);
+    }
+
+    public function getNetSalaryAttribute()
+    {
+        $basic_salary = $this->basic_salary;
+        $total_deductions = $this->deductions->sum('amount');
+
+        return $basic_salary - $total_deductions;
     }
 }

@@ -47,7 +47,11 @@ class EmployeesController extends Controller
             'status' => 'required|in:active,inactive'
         ]);
 
-        Employee::create($request->all());
+        // حفظ البيانات بشكل آمن
+        Employee::create($request->only([
+            'name', 'email', 'phone', 'job_title', 'basic_salary', 'department_id', 'hiring_date', 'status'
+        ]));
+
 
         return redirect()->route('employees.index')->with('success', 'تم إضافة الموظف بنجاح');
     }
@@ -73,12 +77,13 @@ class EmployeesController extends Controller
             'status' => 'required|in:active,inactive'
         ]);
 
-        $employee->update($request->all());
+        // تحديث البيانات بشكل آمن
+        $employee->update($request->only([
+            'name', 'email', 'phone', 'job_title', 'basic_salary', 'department_id', 'hiring_date', 'status'
+        ]));
 
-        return redirect()->route('employees.index')->with('success', 'تم تحديث بيانات الموظف');
+        return redirect()->route('employees.index')->with('success', 'تم تحديث بيانات الموظف بنجاح.');
     }
-
-
 
     public function destroy(Employee $employee) {
         $employee->delete();

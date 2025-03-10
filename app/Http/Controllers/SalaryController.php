@@ -28,7 +28,7 @@ class SalaryController extends Controller
         }
 
         $salaries = $query->paginate(10);
-        
+
         return view('salaries.index', compact('salaries'));
 
     }

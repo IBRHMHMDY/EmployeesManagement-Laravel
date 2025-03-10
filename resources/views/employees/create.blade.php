@@ -1,9 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto p-6">
+<div class="max-w-6xl mx-auto bg-white p-6 shadow-lg rounded-lg">
     <h2 class="text-3xl font-bold mb-6 text-gray-700">إضافة موظف جديد</h2>
-
+    @if ($errors->any())
+        <div class="bg-red-500 text-white p-2 rounded">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <div class="bg-white shadow-lg rounded-lg p-6">
         <form action="{{ route('employees.store') }}" method="POST">
             @csrf
@@ -28,13 +36,13 @@
             </div>
 
             <div class="mb-4">
-                <label class="block">الراتب الأساسي:</label>
-                <input type="number" name="basic_salary" class="border p-2 w-full rounded">
+                <label class="block">تاريخ التوظيف:</label>
+                <input type="date" name="hiring_date" value="{{ request('date, ') }}" class="border p-2 w-full rounded">
             </div>
 
             <div class="mb-4">
-                <label class="block">تاريخ التوظيف:</label>
-                <input type="date" name="hiring_date" class="border p-2 w-full rounded">
+                <label class="block">الراتب الأساسي:</label>
+                <input type="number" name="basic_salary" class="border p-2 w-full rounded">
             </div>
 
             <div class="mb-4">

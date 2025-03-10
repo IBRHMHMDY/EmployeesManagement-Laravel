@@ -4,6 +4,7 @@ use App\Http\Controllers\AttendancesController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DeductionsController;
 use App\Http\Controllers\DepartmentsController;
 use App\Http\Controllers\EmployeesController;
 use App\Http\Controllers\HolidayController;
@@ -33,6 +34,15 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::resource('departments', DepartmentsController::class);
 Route::resource('employees', EmployeesController::class);
+
+// Route::get('/employees', [EmployeesController::class, 'index'])->name('employees.index');
+// Route::get('/employees/create', [EmployeesController::class, 'create'])->name('employees.create');
+// Route::post('/employees', [EmployeesController::class, 'store'])->name('employees.store');
+// Route::get('/employees/{employee}', [EmployeesController::class, 'show'])->name('employees.show');
+// Route::get('/employees/{employee}/edit', [EmployeesController::class, 'edit'])->name('employees.edit');
+// Route::put('/employees/{employee}', [EmployeesController::class, 'update'])->name('employees.update');
+// Route::delete('/employees/{employee}', [EmployeesController::class, 'destroy'])->name('employees.destroy');
+
 Route::resource('salaries', SalariesController::class);
 
 // عرض صفحة الحضور والانصراف
@@ -61,7 +71,8 @@ Route::patch('leaves/{leave}/update-status', [LeavesController::class, 'updateSt
 Route::delete('leaves/{leave}', [LeavesController::class, 'destroy'])->name('leaves.destroy');
 // عرض صفحة إدارة الأجازات الرسمية
 Route::resource('holidays', HolidayController::class);
-
+// عرض صفحة الاستقطاعات
+Route::resource('deductions', DeductionsController::class);
 // عرض صفحة الإعدادات
 Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
 Route::post('/settings/update', [SettingController::class, 'update'])->name('settings.update');

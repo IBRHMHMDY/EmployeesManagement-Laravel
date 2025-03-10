@@ -76,15 +76,10 @@ class LeavesController extends Controller
         return redirect()->route('leaves.index')->with('success', 'تم تحديث بيانات الإجازة بنجاح');
     }
 
-    // public function approve(Leave $leave)
-    // {
-    //     $leave->update(['status' => 'موافقة']);
-    //     return back()->with('success', 'تمت الموافقة على الإجازة');
-    // }
-
-    // public function reject(Leave $leave)
-    // {
-    //     $leave->update(['status' => 'مرفوضة']);
-    //     return back()->with('error', 'تم رفض الإجازة');
-    // }
+    public function destroy(Leave $leave)
+    {
+        $leave->delete();
+        return back()->with('success', 'تم حذف الإجازة بنجاح');
+    }
+    
 }

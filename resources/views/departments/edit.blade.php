@@ -3,7 +3,7 @@
 @section('title', 'تعديل القسم')
 
 @section('content')
-<div class="container mx-auto p-6">
+<div class="max-w-6xl mx-auto bg-white p-6 shadow-lg rounded-lg">
     <h1 class="text-3xl font-bold mb-4">تعديل القسم</h1>
 
     <form action="{{ route('departments.update', $department->id) }}" method="POST">

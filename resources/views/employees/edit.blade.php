@@ -1,12 +1,22 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto p-6">
+<div class="max-w-6xl mx-auto bg-white p-6 shadow-lg rounded-lg">
     <h2 class="text-3xl font-bold mb-6 text-gray-700">تعديل بيانات الموظف</h2>
+    @if ($errors->any())
+        <div class="bg-red-500 text-white p-2 rounded">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
     <div class="bg-white shadow-lg rounded-lg p-6">
-        <form action="{{ route('employees.update', $employee) }}" method="POST">
-            @csrf @method('PUT')
+        <form action="{{ route('employees.update', $employee->id) }}" method="POST">
+            @csrf
+            @method('PUT')
 
             <div class="mb-4">
                 <label class="block">الاسم:</label>
@@ -16,6 +26,14 @@
             <div class="mb-4">
                 <label class="block">البريد الإلكتروني:</label>
                 <input type="email" name="email" value="{{ $employee->email }}" class="border p-2 w-full rounded">
+            </div>
+            <div class="mb-4">
+                <label class="block">رقم الهاتف:</label>
+                <input type="text" name="phone" value="{{ $employee->phone }}" class="border p-2 w-full rounded">
+            </div>
+            <div class="mb-4">
+                <label class="block">المسمى الوظيفي:</label>
+                <input type="text" name="job_title" value="{{ $employee->job_title }}" class="border p-2 w-full rounded">
             </div>
             <div class="mb-4">
                 <label class="block">الراتب الأساسي:</label>
