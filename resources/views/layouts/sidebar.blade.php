@@ -40,8 +40,8 @@
                 <span class="material-icons">money_off</span> الخصومات
             </a>
         </li>
-        <li>
-            <a href="{{ route('users.index') }}" class="block p-2">
+        <li class="mb-4">
+            <a href="{{ route('users.index') }}" class="flex items-center gap-2 hover:bg-gray-700 p-2 rounded">
                 <span class="material-icons">people</span> المستخدمين
             </a>
         </li>
