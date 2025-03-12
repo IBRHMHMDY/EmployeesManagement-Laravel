@@ -1,4 +1,4 @@
-<aside id="sidebar" class="fixed top-18 right-0 w-64 h-screen p-4 bg-gray-800 text-white shadow-lg transform translate-x-full lg:translate-x-0 lg:relative transition-transform duration-200 ease-in-out z-50">
+<aside id="sidebar" class="fixed top-18 right-0 w-64 min-h-screen p-4 bg-gray-800 text-white shadow-lg transform translate-x-full lg:translate-x-0 lg:relative transition-transform duration-200 ease-in-out z-50">
     <ul class="p-4">
         <li class="mb-4 active">
             <a href="{{ route('dashboard') }}" class="flex items-center gap-2 hover:bg-gray-700 p-2 rounded">
