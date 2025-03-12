@@ -30,6 +30,7 @@
             <tr class="bg-gray-200">
                 <th class="border p-2">الموظف</th>
                 <th class="border p-2">التاريخ</th>
+                <th class="border p-2">الوردية</th>
                 <th class="border p-2">وقت الحضور</th>
                 <th class="border p-2">وقت الانصراف</th>
                 <th class="border p-2">التأخير</th>
@@ -44,6 +45,7 @@
                 <tr>
                     <td class="border p-2">{{ $attendance->employee->name }}</td>
                     <td class="border p-2">{{ $attendance->date }}</td>
+                    <td class="border px-4 py-2">{{ $attendance->shift->name ?? 'غير محدد' }}</td>
                     <td class="border p-2">{{ $attendance->check_in }}</td>
                     <td class="border p-2">{{ $attendance->check_out ?? '---' }}</td>
                     <td class="border p-2">{{ $attendance->late_minutes }} دقيقة</td>

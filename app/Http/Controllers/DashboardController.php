@@ -21,10 +21,12 @@ class DashboardController extends Controller
             'todayAttendances' => Attendance::whereDate('check_in', now()->toDateString())->count(),
             'approvedLeavesToday' => Leave::whereDate('start_date', now()->toDateString())->where('status', 'approved')->count(),
             'totalSalaries' => Salary::sum('net_salary'),
-            // 'recentActions' => ActivityLog::latest()->limit(5)->get(),
+            'totalLeaves' => Leave::count(),
+            'total_late_minutes' => Attendance::whereDate('check_in', now()->toDateString())->where('check_in', '>', now()->setHour(8)->setMinute(30))->sum('late_minutes'),
+            'total_absences' => Attendance::whereDate('check_in', now()->toDateString())->whereNull('check_out')->count(),
+            'total_overtime' => Attendance::whereDate('check_in', now()->toDateString())->where('check_out', '>', now()->setHour(17)->setMinute(30))->sum('overtime_minutes'),
+            'total_deductions' => Deduction::sum('amount'),
             'notifications' => $this->getNotifications(),
-            'chartLabels' => Employee::pluck('name')->toArray(),
-            'chartData' => Employee::withSum('attendance', 'working_hours')->get()->map(fn($e) => $e->attendances_sum_working_hours ?? 0)->toArray(),
         ]);
     }
 

@@ -1,5 +1,5 @@
-<aside class="bg-gray-800 text-white w-64 h-screen p-4 flex flex-col justify-between">
-    <ul >
+<aside id="sidebar" class="fixed top-18 right-0 w-64 h-screen p-4 bg-gray-800 text-white shadow-lg transform translate-x-full lg:translate-x-0 lg:relative transition-transform duration-200 ease-in-out z-50">
+    <ul class="p-4">
         <li class="mb-4 active">
             <a href="{{ route('dashboard') }}" class="flex items-center gap-2 hover:bg-gray-700 p-2 rounded">
                 <span class="material-icons">home</span> الرئيسية
@@ -8,6 +8,11 @@
         <li class="mb-4">
             <a href="{{ route('departments.index') }}" class="flex items-center gap-2 hover:bg-gray-700 p-2 rounded">
                 <span class="material-icons">business</span>  إدارة الأقسام
+            </a>
+        </li>
+        <li class="mb-4">
+            <a href="{{ route('shifts.index') }}" class="flex items-center gap-2 hover:bg-gray-700 p-2 rounded">
+                <span class="material-icons">schedule</span>  إدارة الورديات
             </a>
         </li>
         <li class="mb-4">
@@ -45,9 +50,6 @@
                 <span class="material-icons">people</span> المستخدمين
             </a>
         </li>
-
-    </ul>
-    <ul>
         <li class="mb-4">
             <a href="{{ route('settings.index') }}" class="flex items-center gap-2 hover:bg-gray-700 p-2 rounded">
                 <span class="material-icons">settings</span> الإعدادات
@@ -55,22 +57,3 @@
         </li>
     </ul>
 </aside>
-
-
-
-
-
-
-{{-- <aside class="w-64 bg-white shadow-md h-screen p-4">
-    <ul>
-        <li class="mb-4"><a href="{{ route('dashboard') }}" class="block p-2 bg-blue-500 text-white rounded">الرئيسية</a></li>
-        <li class="mb-4"><a href="{{ route('departments.index') }}" class="block p-2 hover:bg-gray-200 rounded">الأقسام</a></li>
-        <li class="mb-4"><a href="{{ route('employees.index') }}" class="block p-2 hover:bg-gray-200 rounded">الموظفين</a></li>
-        <li class="mb-4"><a href="{{ route('attendances.index') }}" class="block p-2 hover:bg-gray-200 rounded">كشف الحضور والإنصراف</a></li>
-        <li class="mb-4"><a href="{{ route('salaries.index') }}" class="block p-2 hover:bg-gray-200 rounded">كشف المرتبات</a></li>
-        <li class="mb-4"><a href="{{ route('leaves.index') }}" class="block p-2 hover:bg-gray-200 rounded">كشف الاجازات</a></li>
-        <li class="mb-4"><a href="{{ route('holidays.index') }}" class="block p-2 hover:bg-gray-200 rounded">قائمة الأجازات الرسمية</a></li>
-        <li class="mb-4"><a href="{{ route('deductions.index') }}" class="block p-2 hover:bg-gray-200 rounded">إدارة الخصومات</a></li>
-        <li class="mb-4"><a href="{{ route('settings.index') }}" class="block p-2 hover:bg-gray-200 rounded">الإعدادات</a></li>
-    </ul>
-</aside> --}}

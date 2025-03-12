@@ -1,11 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-6xl mx-auto bg-white p-6 shadow-lg rounded-lg">
+<div class="max-w-6xl md:max-w-5xl mx-auto bg-white p-6 shadow-lg rounded-lg">
     <h2 class="text-3xl font-bold mb-6 text-gray-700">لوحة التحكم</h2>
-
     <!-- الإحصائيات -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="bg-blue-500 text-white p-4 rounded-lg shadow-md">
             <h3 class="text-lg font-semibold">إجمالي الموظفين</h3>
             <p class="text-2xl">{{ $totalEmployees }}</p>
@@ -26,13 +25,29 @@
             <h3 class="text-lg font-semibold">إجمالي المرتبات المستحقة</h3>
             <p class="text-2xl">{{ number_format($totalSalaries, 2) }} ج.م</p>
         </div>
+        <div class="bg-red-100 p-4 rounded">
+            <h3 class="text-xl font-bold text-red-600">إجمالي الغيابات</h3>
+            <p>{{ $total_absences }} يوم</p>
+        </div>
+        <div class="bg-yellow-100 p-4 rounded">
+            <h3 class="text-xl font-bold text-yellow-600">إجمالي التأخير</h3>
+            <p>{{ $total_late_minutes }} دقيقة</p>
+        </div>
+        <div class="bg-green-100 p-4 rounded">
+            <h3 class="text-xl font-bold text-green-600">إجمالي الإضافي</h3>
+            <p>{{ $total_overtime }} ساعة</p>
+        </div>
+        <div class="bg-blue-100 p-4 rounded">
+            <h3 class="text-xl font-bold text-blue-600">إجمالي الخصومات</h3>
+            <p>{{ $total_deductions }} جنيه</p>
+        </div>
     </div>
 
     <!-- الرسم البياني -->
-    <div class="mt-8">
+    {{-- <div class="mt-8">
         <h3 class="text-xl font-bold mb-4">ساعات العمل والإضافي</h3>
         <canvas id="workHoursChart"></canvas>
-    </div>
+    </div> --}}
 
     <!-- جدول العمليات الأخيرة -->
     {{-- <div class="mt-8">
@@ -67,7 +82,7 @@
         </ul>
     </div>
 </div>
-
+{{--
 <!-- سكريبت الرسم البياني -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
@@ -83,5 +98,5 @@
             }]
         }
     });
-</script>
+</script> --}}
 @endsection

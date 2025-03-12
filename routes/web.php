@@ -11,6 +11,7 @@ use App\Http\Controllers\HolidayController;
 use App\Http\Controllers\LeavesController;
 use App\Http\Controllers\SalaryController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\ShiftController;
 
 Route::middleware('guest')->group(function() {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -28,6 +29,7 @@ Route::resource('users', UserController::class);
 
 Route::resource('departments', DepartmentsController::class);
 Route::resource('employees', EmployeesController::class);
+Route::resource('shifts', ShiftController::class);
 Route::resource('salaries', SalaryController::class);
 
 // عرض صفحة الحضور والانصراف

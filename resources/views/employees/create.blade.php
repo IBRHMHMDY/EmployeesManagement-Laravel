@@ -54,10 +54,11 @@
                 </select>
             </div>
             <div class="mb-4">
-                <label class="block">حالة الموظف:</label>
-                <select name="status" class="border p-2 w-full rounded">
-                    <option value="active">نشط</option>
-                    <option value="inactive">غير نشط</option>
+                <label class="block text-gray-700 font-bold mb-2">الوردية:</label>
+                <select name="shift_id" class="w-full p-2 border border-gray-300 rounded">
+                    @foreach($shifts as $shift)
+                        <option value="{{ $shift->id }}">{{ $shift->name }} ({{ $shift->start_time }} - {{ $shift->end_time }})</option>
+                    @endforeach
                 </select>
             </div>
             <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded">إضافة</button>

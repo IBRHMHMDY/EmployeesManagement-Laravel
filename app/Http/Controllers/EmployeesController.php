@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Department;
 use App\Models\Employee;
+use App\Models\Shift;
 use Illuminate\Http\Request;
 
 class EmployeesController extends Controller
@@ -31,7 +32,8 @@ class EmployeesController extends Controller
 
     public function create() {
         $departments = Department::all();
-        return view('employees.create', compact('departments'));
+        $shifts = Shift::all();
+        return view('employees.create', compact('departments','shifts'));
     }
 
 
@@ -44,12 +46,13 @@ class EmployeesController extends Controller
             'basic_salary' => 'required|numeric',
             'department_id' => 'required|exists:departments,id',
             'hiring_date' => 'required|date',
-            'status' => 'required|in:active,inactive'
+            'status' => 'required|in:active,inactive',
+            'shift_id' => 'required|exists:shifts,id'
         ]);
 
         // حفظ البيانات بشكل آمن
         Employee::create($request->only([
-            'name', 'email', 'phone', 'job_title', 'basic_salary', 'department_id', 'hiring_date', 'status'
+            'name', 'email', 'phone', 'job_title', 'basic_salary', 'department_id', 'hiring_date', 'status', 'shift_id'
         ]));
 
 
@@ -62,7 +65,8 @@ class EmployeesController extends Controller
 
     public function edit(Employee $employee) {
         $departments = Department::all();
-        return view('employees.edit', compact('employee', 'departments'));
+        $shifts = Shift::all();
+        return view('employees.edit', compact('employee', 'departments', 'shifts'));
     }
 
     public function update(Request $request, Employee $employee) {
@@ -74,12 +78,13 @@ class EmployeesController extends Controller
             'basic_salary' => 'required|numeric',
             'department_id' => 'required|exists:departments,id',
             'hiring_date' => 'required|date',
-            'status' => 'required|in:active,inactive'
+            'status' => 'required|in:active,inactive',
+            'shift_id' => 'required|exists:shifts,id'
         ]);
 
         // تحديث البيانات بشكل آمن
         $employee->update($request->only([
-            'name', 'email', 'phone', 'job_title', 'basic_salary', 'department_id', 'hiring_date', 'status'
+            'name', 'email', 'phone', 'job_title', 'basic_salary', 'department_id', 'hiring_date', 'status', 'shift_id'
         ]));
 
         return redirect()->route('employees.index')->with('success', 'تم تحديث بيانات الموظف بنجاح.');

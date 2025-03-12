@@ -8,7 +8,7 @@ class Attendance extends Model
 {
     // use HasFactory;
 
-    protected $fillable = ['employee_id', 'date', 'check_in', 'check_out', 'late_minutes', 'status'];
+    protected $fillable = ['employee_id', 'shift_id', 'date', 'check_in', 'check_out', 'late_minutes', 'status'];
 
     protected $casts = [
         'check_in' => 'string',  // أو 'integer', 'boolean', 'datetime'
@@ -19,5 +19,10 @@ class Attendance extends Model
     public function employee()
     {
         return $this->belongsTo(Employee::class);
+    }
+
+    public function shift()
+    {
+        return $this->belongsTo(Shift::class);
     }
 }

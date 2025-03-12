@@ -25,6 +25,6 @@ class AuthController extends Controller
 
     public function logout(Request $request) {
         Auth::logout();
-        return response()->json(['message' => 'تم تسجيل الخروج']);
+        return redirect()->route('login');
     }
 }

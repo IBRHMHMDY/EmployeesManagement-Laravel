@@ -55,6 +55,17 @@
                     </select>
             </div>
             <div class="mb-4">
+                <label class="block">الوردية:</label>
+                <select name="shift_id" class="border p-2 w-full rounded">
+                    @foreach($shifts as $shift)
+                        <option value="{{ $shift->id }}"
+                            {{ $employee->shift_id == $shift->id ? 'selected' : '' }}>
+                            {{ $shift->name }}
+                        </option>
+                        @endforeach
+                    </select>
+            </div>
+            <div class="mb-4">
                 <label class="block">حالة الموظف:</label>
                 <select name="status" class="border p-2 w-full rounded">
                     <option value="active" {{ $employee->status == 'active' ? 'selected' : '' }}>نشط</option>

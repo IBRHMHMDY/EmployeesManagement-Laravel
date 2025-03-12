@@ -32,6 +32,42 @@ class SalaryController extends Controller
         return view('salaries.index', compact('salaries'));
 
     }
+    // حساب الراتب وفقًا للإضافي والخصومات
+    public function calculateSalary($employee_id)
+    {
+        $employee = Employee::find($employee_id);
+
+        // إجمالي الغياب والتأخير
+        $total_absence = Attendance::where('employee_id', $employee_id)
+                                ->sum('absence_days');
+
+        // عدد الساعات الإضافية
+        $total_overtime = Attendance::where('employee_id', $employee_id)
+                                    ->sum('overtime_hours');
+
+        // حساب سعر الساعة
+        $basic_salary = $employee->basic_salary;
+        $hourly_rate = $basic_salary / 160; // (160 = عدد ساعات العمل الشهرية)
+
+        // حساب الخصومات
+        $deduction = $total_absence * ($basic_salary / 30); // خصم على أساس يومي
+
+        // حساب المكافآت (سعر الساعة الإضافية = 1.5x)
+        $overtime_bonus = $total_overtime * $hourly_rate * 1.5;
+
+        // حساب الراتب النهائي
+        $final_salary = $basic_salary - $deduction + $overtime_bonus;
+
+        return response()->json([
+            'employee_id' => $employee_id,
+            'basic_salary' => $basic_salary,
+            'deduction' => $deduction,
+            'overtime_bonus' => $overtime_bonus,
+            'final_salary' => $final_salary,
+        ]);
+    }
+
+
 
     public function create()
     {

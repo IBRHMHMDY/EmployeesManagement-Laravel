@@ -20,7 +20,7 @@
         <div class="mb-4">
             <label class="block">الدور</label>
             <select name="role" class="border p-2 w-full rounded">
-                <option value="user">مستخدم</option>
+                <option value="employee">موظف</option>
                 <option value="admin">مسؤول</option>
             </select>
         </div>

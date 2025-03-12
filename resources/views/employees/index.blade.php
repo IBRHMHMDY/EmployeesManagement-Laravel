@@ -22,6 +22,7 @@
                 <th class="border p-2">المسمى الوظيفي</th>
                 <th class="border p-2">تاريخ الإلتحاق</th>
                 <th class="border p-2">القسم</th>
+                <th class="border p-2">الوردية</th>
                 <th class="border p-2">الإجراءات</th>
             </tr>
         </thead>
@@ -33,6 +34,7 @@
                     <td class="border p-2">{{ $employee->job_title }}</td>
                     <td class="border p-2">{{ $employee->hiring_date }}</td>
                     <td class="border p-2">{{ $employee->department->name ?? 'غير محدد' }}</td>
+                    <td class="border p-2">{{ $employee->shift->name ?? 'غير محدد' }}</td>
                     <td class="border p-2">
                         <a href="{{ route('employees.show', $employee->id) }}" class="text-green-500">عرض</a> |
                         <a href="{{ route('employees.edit', $employee->id) }}" class="text-blue-500">تعديل</a> |

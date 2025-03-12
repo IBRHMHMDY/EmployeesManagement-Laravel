@@ -18,6 +18,7 @@ class Employee extends Model
         "department_id",
         "hiring_date",
         "status",
+        "shift_id",
       ];
 
     public function department()
@@ -29,7 +30,10 @@ class Employee extends Model
     {
         return $this->hasMany(Attendance::class);
     }
-
+    public function shift()
+    {
+        return $this->belongsTo(Shift::class);
+    }
     public function salary()
     {
         return $this->hasOne(Salary::class);
