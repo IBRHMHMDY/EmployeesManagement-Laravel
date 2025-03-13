@@ -42,12 +42,12 @@
         </li>
         <li class="mb-4">
             <a href="{{ route('deductions.index') }}" class="flex items-center gap-2 hover:bg-gray-700 p-2 rounded">
-                <span class="material-icons">money_off</span> الخصومات
+                <span class="material-icons">money_off</span> كشف الخصومات
             </a>
         </li>
         <li class="mb-4">
             <a href="{{ route('users.index') }}" class="flex items-center gap-2 hover:bg-gray-700 p-2 rounded">
-                <span class="material-icons">people</span> المستخدمين
+                <span class="material-icons">people</span> إدارة المستخدمين
             </a>
         </li>
         <li class="mb-4">

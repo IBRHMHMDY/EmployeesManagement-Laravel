@@ -45,10 +45,11 @@ class DeductionsController extends Controller
         $net_salary = $basic_salary - $total_deductions;
 
         // تحديث جدول المرتبات (payrolls)
-        Salary::updateOrCreate(
+        Salary::update(
             ['employee_id' => $employee_id], // البحث عن المرتب الحالي أو إنشاؤه
             ['net_salary' => $net_salary], // تحديث صافي الراتب
             ['total_deductions' => $total_deductions], // تحديث إجمالي الخصومات
+            ['month' => now()->format('F Y')], // تحديث الشهر الحالي
         );
     }
 

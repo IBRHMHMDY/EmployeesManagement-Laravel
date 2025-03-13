@@ -17,7 +17,6 @@ class Employee extends Model
         "basic_salary",
         "department_id",
         "hiring_date",
-        "status",
         "shift_id",
       ];
 

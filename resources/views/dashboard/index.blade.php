@@ -5,13 +5,13 @@
     <h2 class="text-3xl font-bold mb-6 text-gray-700">لوحة التحكم</h2>
     <!-- الإحصائيات -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="bg-blue-500 text-white p-4 rounded-lg shadow-md">
-            <h3 class="text-lg font-semibold">إجمالي الموظفين</h3>
-            <p class="text-2xl">{{ $totalEmployees }}</p>
-        </div>
         <div class="bg-green-500 text-white p-4 rounded-lg shadow-md">
             <h3 class="text-lg font-semibold">عدد الأقسام</h3>
             <p class="text-2xl">{{ $totalDepartments }}</p>
+        </div>
+        <div class="bg-blue-500 text-white p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">إجمالي الموظفين</h3>
+            <p class="text-2xl">{{ $totalEmployees }}</p>
         </div>
         <div class="bg-yellow-500 text-white p-4 rounded-lg shadow-md">
             <h3 class="text-lg font-semibold">الحضور اليوم</h3>
@@ -19,6 +19,10 @@
         </div>
         <div class="bg-red-500 text-white p-4 rounded-lg shadow-md">
             <h3 class="text-lg font-semibold">الإجازات المعتمدة اليوم</h3>
+            <p class="text-2xl">{{ $approvedLeavesToday }}</p>
+        </div>
+        <div class="bg-red-500 text-white p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold">الغيابات اليوم</h3>
             <p class="text-2xl">{{ $approvedLeavesToday }}</p>
         </div>
         <div class="bg-purple-500 text-white p-4 rounded-lg shadow-md">

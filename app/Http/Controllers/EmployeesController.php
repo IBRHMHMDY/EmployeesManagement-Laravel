@@ -46,13 +46,12 @@ class EmployeesController extends Controller
             'basic_salary' => 'required|numeric',
             'department_id' => 'required|exists:departments,id',
             'hiring_date' => 'required|date',
-            'status' => 'required|in:active,inactive',
             'shift_id' => 'required|exists:shifts,id'
         ]);
 
         // حفظ البيانات بشكل آمن
         Employee::create($request->only([
-            'name', 'email', 'phone', 'job_title', 'basic_salary', 'department_id', 'hiring_date', 'status', 'shift_id'
+            'name', 'email', 'phone', 'job_title', 'basic_salary', 'department_id', 'hiring_date', 'shift_id'
         ]));
 
 
@@ -78,13 +77,12 @@ class EmployeesController extends Controller
             'basic_salary' => 'required|numeric',
             'department_id' => 'required|exists:departments,id',
             'hiring_date' => 'required|date',
-            'status' => 'required|in:active,inactive',
             'shift_id' => 'required|exists:shifts,id'
         ]);
 
         // تحديث البيانات بشكل آمن
         $employee->update($request->only([
-            'name', 'email', 'phone', 'job_title', 'basic_salary', 'department_id', 'hiring_date', 'status', 'shift_id'
+            'name', 'email', 'phone', 'job_title', 'basic_salary', 'department_id', 'hiring_date', 'shift_id'
         ]));
 
         return redirect()->route('employees.index')->with('success', 'تم تحديث بيانات الموظف بنجاح.');

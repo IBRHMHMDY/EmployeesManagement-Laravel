@@ -11,8 +11,8 @@
         <thead>
             <tr class="bg-gray-200">
                 <th class="border p-2">الموظف</th>
-                <th class="border p-2">سبب الخصم</th>
                 <th class="border p-2">المبلغ</th>
+                <th class="border p-2">سبب الخصم</th>
                 <th class="border p-2">الإجراء</th>
             </tr>
         </thead>
@@ -20,8 +20,8 @@
             @foreach($deductions as $deduction)
                 <tr>
                     <td class="border p-2">{{ $deduction->employee->name }}</td>
-                    <td class="border p-2">{{ $deduction->reason }}</td>
                     <td class="border p-2">{{ $deduction->amount }} ج.م</td>
+                    <td class="border p-2">{{ $deduction->reason }}</td>
                     <td class="border p-2">
                         <a href="{{ route('deductions.edit', $deduction->id) }}" class="text-blue-500">تعديل</a> |
                         <form method="POST" action="{{ route('deductions.destroy', $deduction->id) }}" class="inline">
